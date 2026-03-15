@@ -1,0 +1,186 @@
+tutoring-system/
+│
+├── 📁 backend/
+│   ├── 📁 src/
+│   │   ├── 📁 ingestion/
+│   │   │   ├── 📄 __init__.py
+│   │   │   ├── 📄 pdf_processor.py          # Textbook PDF extraction
+│   │   │   ├── 📄 text_extractor.py         # OCR and text cleaning
+│   │   │   ├── 📄 structure_parser.py       # Chapter/section detection
+│   │   │   └── 📄 metadata_extractor.py     # Extract grade, subject, etc.
+│   │   │
+│   │   ├── 📁 indexing/
+│   │   │   ├── 📄 __init__.py
+│   │   │   ├── 📄 multi_level_index.py      # Main indexing system
+│   │   │   ├── 📄 chapter_indexer.py        # Chapter-level embeddings
+│   │   │   ├── 📄 concept_indexer.py        # Concept-level indexing  
+│   │   │   ├── 📄 page_indexer.py           # Page-level mapping
+│   │   │   └── 📄 embedding_generator.py    # Generate embeddings locally
+│   │   │
+│   │   ├── 📁 query/
+│   │   │   ├── 📄 __init__.py
+│   │   │   ├── 📄 query_parser.py           # Parse and normalize queries
+│   │   │   ├── 📄 intent_classifier.py      # Classify query type
+│   │   │   ├── 📄 context_pruner.py         # MAIN PRUNING ENGINE
+│   │   │   │   ├── 📄 strategies/
+│   │   │   │   │   ├── semantic_pruner.py
+│   │   │   │   │   ├── grade_pruner.py
+│   │   │   │   │   ├── token_pruner.py
+│   │   │   │   │   └── recency_pruner.py
+│   │   │   │   └── pruner_factory.py
+│   │   │   └── 📄 prompt_builder.py         # Build minimal prompts
+│   │   │
+|   |   ├── 📁 scaledown/                    ⭐ NEW DIRECTORY ⭐
+│   │   │   ├── 📄 __init__.py
+│   │   │   ├── 📄 client.py                  # ScaleDown API client
+│   │   │   ├── 📄 config.py                   # ScaleDown configuration
+│   │   │   ├── 📄 optimizer.py                # Prompt optimization wrapper
+│   │   │   ├── 📄 cache.py                    # Cache optimized prompts
+│   │   │   ├── 📄 metrics.py                   # Track savings
+│   │   │   └── 📄 fallback.py                  # Fallback if API fails
+│   │   ├── 📁 llm/
+│   │   │   ├── 📄 __init__.py
+│   │   │   ├── 📄 router.py                  # LLM routing logic
+│   │   │   ├── 📄 tier_manager.py            # Model tier management
+│   │   │   ├── 📁 providers/
+│   │   │   │   ├── 📄 local_tiny.py          # TinyLlama, Phi-2
+│   │   │   │   ├── 📄 gpt3_turbo.py          # GPT-3.5 Turbo
+│   │   │   │   ├── 📄 gpt4.py                 # GPT-4 (fallback)
+│   │   │   │   └── 📄 claude.py               # Claude (backup)
+│   │   │   └── 📄 cost_tracker.py            # Track API costs
+│   │   │
+│   │   ├── 📁 cache/
+│   │   │   ├── 📄 __init__.py
+│   │   │   ├── 📄 lru_cache.py               # LRU implementation
+│   │   │   ├── 📄 redis_client.py            # Redis connection
+│   │   │   ├── 📄 response_cache.py          # Cache answers
+│   │   │   └── 📄 embedding_cache.py         # Cache embeddings
+│   │   │
+│   │   ├── 📁 offline/
+│   │   │   ├── 📄 __init__.py
+│   │   │   ├── 📄 sync_manager.py            # Sync with cloud
+│   │   │   ├── 📄 local_db.py                # SQLite/IndexedDB
+│   │   │   ├── 📄 compression.py             # Compress textbooks
+│   │   │   └── 📄 quantized_models.py        # 2-bit quantized models
+│   │   │
+│   │   ├── 📁 api/
+│   │   │   ├── 📄 __init__.py
+│   │   │   ├── 📄 routes.py                   # API endpoints
+│   │   │   ├── 📄 middleware.py               # Auth, rate limiting
+│   │   │   ├── 📄 validators.py               # Input validation
+│   │   │   └── 📄 serializers.py              # Response formatting
+│   │   │
+│   │   └── 📁 utils/
+│   │       ├── 📄 __init__.py
+│   │       ├── 📄 logger.py                   # Logging
+│   │       ├── 📄 metrics.py                  # Performance metrics
+│   │       ├── 📄 text_utils.py               # Text processing
+│   │       └── 📄 validators.py               # Data validation
+│   │
+│   ├── 📁 config/
+│   │   ├── 📄 __init__.py
+│   │   ├── 📄 settings.py                      # Main config
+│   │   ├── 📄 constants.py                      # System constants
+│   │   ├── 📄 model_config.yaml                 # Model settings
+│   │   ├── 📄 pruning_config.yaml               # Pruning thresholds
+│   │   └── 📄 database_config.py                # DB connections
+│   │
+│   ├── 📁 scripts/
+│   │   ├── 📄 ingest_textbooks.py               # Batch ingestion
+│   │   ├── 📄 generate_embeddings.py            # Pre-compute embeddings
+│   │   ├── 📄 warm_up_cache.py                   # Cache warming
+│   │   └── 📄 benchmark.py                       # Performance testing
+│   │
+│   └── 📄 requirements.txt                       # Python dependencies
+│
+├── 📁 frontend/
+│   ├── 📁 src/
+│   │   ├── 📁 components/
+│   │   │   ├── 📄 ChatInterface.jsx             # Main chat UI
+│   │   │   ├── 📄 QuestionInput.jsx             # Query input
+│   │   │   ├── 📄 AnswerDisplay.jsx             # Show answers
+│   │   │   ├── 📄 TextbookViewer.jsx            # View textbook
+│   │   │   └── 📄 OfflineIndicator.jsx          # Connectivity status
+│   │   │
+│   │   ├── 📁 services/
+│   │   │   ├── 📄 api.js                         # API calls
+│   │   │   ├── 📄 offline_queue.js               # Queue offline queries
+│   │   │   ├── 📄 cache_manager.js               # Browser cache
+│   │   │   ├── 📄 sync_service.js                # Background sync
+│   │   │   └── 📄 local_model.js                 # On-device model
+│   │   │
+│   │   ├── 📁 store/
+│   │   │   ├── 📄 query_store.js                 # Query state
+│   │   │   ├── 📄 user_store.js                  # User data
+│   │   │   └── 📄 cache_store.js                  # Cache state
+│   │   │
+│   │   ├── 📁 utils/
+│   │   │   ├── 📄 connectivity.js                 # Network checks
+│   │   │   ├── 📄 compression.js                  # Data compression
+│   │   │   └── 📄 storage.js                      # IndexedDB wrapper
+│   │   │
+│   │   └── 📄 App.jsx                              # Main component
+│   │
+│   ├── 📁 public/
+│   │   ├── 📄 index.html
+│   │   ├── 📄 manifest.json                        # PWA manifest
+│   │   └── 📁 models/                              # On-device models
+│   │       ├── 📄 tiny_model.bin
+│   │       └── 📄 vocab.json
+│   │
+│   └── 📄 package.json
+│
+├── 📁 infrastructure/
+│   ├── 📁 docker/
+│   │   ├── 📄 Dockerfile.backend
+│   │   ├── 📄 Dockerfile.frontend
+│   │   └── 📄 docker-compose.yml
+│   │
+│   ├── 📁 kubernetes/
+│   │   ├── 📄 deployment.yaml
+│   │   ├── 📄 service.yaml
+│   │   └── 📄 configmap.yaml
+│   │
+│   └── 📁 terraform/
+│       ├── 📄 main.tf
+│       ├── 📄 variables.tf
+│       └── 📄 outputs.tf
+│
+├── 📁 data/
+│   ├── 📁 textbooks/
+│   │   ├── 📁 raw/                                 # Original PDFs
+│   │   ├── 📁 processed/                           # Extracted text
+│   │   └── 📁 embeddings/                          # Pre-computed
+│   │
+│   ├── 📁 cache/
+│   │   ├── 📁 responses/                           # Cached answers
+│   │   └── 📁 embeddings/                          # Cached vectors
+│   │
+│   └── 📁 models/
+│       ├── 📁 local/                               # Local models
+│       └── 📁 quantized/                            # Compressed models
+│
+├── 📁 tests/
+│   ├── 📁 unit/
+│   │   ├── 📄 test_pruner.py
+│   │   ├── 📄 test_indexer.py
+│   │   └── 📄 test_router.py
+│   │
+│   ├── 📁 integration/
+│   │   ├── 📄 test_query_pipeline.py
+│   │   └── 📄 test_sync.py
+│   │
+│   └── 📁 performance/
+│       ├── 📄 test_cost_savings.py
+│       └── 📄 test_latency.py
+│
+├── 📁 docs/
+│   ├── 📄 architecture.md
+│   ├── 📄 api_documentation.md
+│   ├── 📄 deployment_guide.md
+│   └── 📄 cost_analysis.md
+│
+├── 📄 .env.example
+├── 📄 .gitignore
+├── 📄 README.md
+└── 📄 docker-compose.yml

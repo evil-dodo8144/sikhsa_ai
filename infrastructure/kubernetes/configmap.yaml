@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: default
+data:
+  environment: production
+  log-level: info
+  max-cache-size: "1000"
+  default-tier: free
+  max-tokens-per-query: "2000"
+  scaledown-api-url: https://api.scaledown.ai/v1
+  scaledown-timeout: "2"

@@ -1,0 +1,25 @@
+{
+  "vocab_size": 5000,
+  "pad_token": "[PAD]",
+  "unk_token": "[UNK]",
+  "bos_token": "[CLS]",
+  "eos_token": "[SEP]",
+  "mask_token": "[MASK]",
+  "tokens": [
+    "[PAD]",
+    "[UNK]",
+    "[CLS]",
+    "[SEP]",
+    "[MASK]",
+    "the",
+    "be",
+    "to",
+    "of",
+    "and",
+    "a",
+    "in",
+    "that",
+    "have",
+    "i"
+  ]
+}

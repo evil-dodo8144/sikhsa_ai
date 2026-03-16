@@ -1,0 +1,58 @@
+# Model Configuration
+models:
+  local:
+    enabled: true
+    max_tokens: 500
+    cost_per_1k: 0.0
+    providers:
+      - type: "tinyllama"
+        path: "data/models/local/tinyllama.bin"
+      - type: "phi-2"
+        path: "data/models/local/phi-2.bin"
+  
+  gpt-3.5-turbo:
+    enabled: true
+    max_tokens: 2000
+    cost_per_1k: 0.0015
+    provider: "openai"
+    model_name: "gpt-3.5-turbo"
+    
+  gpt-4:
+    enabled: true
+    max_tokens: 4000
+    cost_per_1k: 0.03
+    provider: "openai"
+    model_name: "gpt-4"
+    
+  claude-instant:
+    enabled: true
+    max_tokens: 3000
+    cost_per_1k: 0.0016
+    provider: "anthropic"
+    model_name: "claude-instant-1"
+
+# Routing rules
+routing:
+  default_model: "gpt-3.5-turbo"
+  fallback_model: "local"
+  
+  rules:
+    - intent: "simple"
+      model: "local"
+      max_tokens: 100
+      
+    - intent: "factual"
+      model: "gpt-3.5-turbo"
+      max_tokens: 500
+      
+    - intent: "conceptual"
+      model: "gpt-3.5-turbo"
+      max_tokens: 1000
+      
+    - intent: "problem_solving"
+      model: "gpt-4"
+      max_tokens: 2000
+      
+    - intent: "complex"
+      model: "gpt-4"
+      max_tokens: 4000
